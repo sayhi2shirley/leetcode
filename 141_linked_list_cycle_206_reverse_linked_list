@@ -1,0 +1,171 @@
+#include <iostream>
+
+using namespace std;
+
+class Node
+{
+public:
+    int num;
+    class Node *next;
+
+    Node()
+    {
+        num = 0;
+        next = nullptr;
+    }
+
+    Node(int val)
+    {
+        num = val;
+        next = nullptr;
+    }
+};
+
+class linked_list
+{
+    Node* head;
+    Node* create_node(int val);
+public:
+    linked_list()
+    {
+        head = nullptr;
+    }
+    // insert at the end of the list
+    void insert_node(int val); 
+    void delete_node(int val);
+    void reverse_list();
+    bool is_list_cycle();
+    void print_list();
+};
+
+Node* linked_list::create_node(int val)
+{
+   Node* new_node = new Node(val);
+   return new_node;
+}
+
+void linked_list::insert_node(int val)
+{
+   Node* current = head;
+   if (current == nullptr)
+   {
+       current = create_node(val);
+       head = current;
+       //cout << current->num << " inserted into the list as head\n";
+       return;
+   }
+   else {
+       while (current->next != nullptr)
+       {
+          current = current->next;
+       }
+       current->next = create_node(val);
+   }
+}
+
+void linked_list::delete_node(int val)
+{
+    Node* current = head;
+    Node* prev;
+    while(current != nullptr)
+    {
+        if(current->num == val)
+        {
+           if (current == head)
+           {
+               head = current->next;
+           } 
+           else {
+               prev->next = current->next;
+           }
+           delete current;
+           break;
+        }
+        else {
+           prev = current;
+           current = current->next;
+        } 
+    }
+}
+
+// 206. Reverse Linked list (75 Blind Leetcode)
+void linked_list::reverse_list()
+{
+    Node* current = head;
+    Node* prev = nullptr;
+    while(current != nullptr)
+    {
+        Node* tmp = current->next;
+        current->next = prev;
+        prev = current;
+        current = tmp;
+    }
+    head = prev;
+}
+
+// 141. Linked list cycle
+bool linked_list::is_list_cycle()
+{
+   Node* slow = head; // Shifts one step 
+   Node* fast = head; // Shifts two steps
+
+   while (fast != nullptr && fast->next != nullptr)
+   {
+       slow = slow->next;
+       fast = fast->next->next;
+
+       if (slow == fast) 
+       {
+         return true;
+       }
+   }
+   return false;
+}
+
+void linked_list::print_list()
+{
+    Node* current = head;
+    cout << "The current list:\n";
+    while(current != nullptr)
+    {
+       cout << current->num << " ";
+       current = current->next;
+    }
+    cout << "\n\n";
+}
+
+int main()
+{
+    linked_list list;
+
+    // Insert Head Node
+    list.insert_node(5);
+    list.print_list();
+
+    // Insert nodes at the end of the list
+    list.insert_node(8);
+    list.insert_node(10);
+    list.insert_node(2);
+    list.print_list();
+
+    // Delete the node
+    list.delete_node(8);
+    list.print_list();
+    
+    list.insert_node(15);
+    list.print_list();
+
+    // Reverse the list
+    list.reverse_list();
+    list.print_list();
+
+    // detect if list is a cycle
+    if (list.is_list_cycle())
+    {
+        cout << "Cycle is detected in the list\n";
+    } else {
+        cout << "No cycle in the list";
+    }
+
+    return 0;
+}
