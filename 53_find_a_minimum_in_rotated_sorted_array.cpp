@@ -20,7 +20,7 @@ public:
                return nums[start];
            }
            mid = (end + start)/2;
-           int midEle = nums[mid];
+           //int midEle = nums[mid];
            //cout << "midEle " << midEle << endl;
            if (nums[mid] < nums[end]) {
                end = mid;
@@ -33,3 +33,6 @@ public:
         return nums[start];
     }
 };
+
+
+// Eg: [3, 1, 2] - Trickyone
